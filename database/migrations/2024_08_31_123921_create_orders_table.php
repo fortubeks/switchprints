@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('customer_id')->constrained()->onDelete('cascade');
             $table->foreignId('branch_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->enum('status', [OrderStatus::PENDING, OrderStatus::IN_PROGRESS, OrderStatus::COMPLETE])->default(OrderStatus::PENDING);
+            $table->string('status')->default(OrderStatus::PENDING->value);
             $table->date('order_date');
             $table->date('expected_delivery_date');
             $table->decimal('total_amount',15,2);

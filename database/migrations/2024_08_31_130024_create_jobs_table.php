@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\OrderStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,7 +18,7 @@ return new class extends Migration
             $table->foreignId('style_id')->constrained()->onDelete('cascade');
             $table->foreignId('machine_id')->constrained()->onDelete('cascade');
             $table->decimal('amount',15,2);
-            $table->enum('status', [OrderStatus::PENDING, OrderStatus::IN_PROGRESS, OrderStatus::COMPLETE])->default(OrderStatus::PENDING);
+            $table->string('status')->default(OrderStatus::PENDING->value);
             $table->date('expected_delivery_date');
             $table->timestamps();
         });
