@@ -14,9 +14,9 @@
 <main class="new-order-form">
         <header class="new-order-parent">
           <a class="new-order2">Dashboard</a>
-          <div class="user-3296-2-container">
+          <div class="machine-3296-2-container">
             <img
-              class="user-3296-2-icon1"
+              class="machine-3296-2-icon1"
               loading="lazy"
               alt=""
               src="{{ asset('switchprints') }}/public/user3296-2.svg"
@@ -28,31 +28,35 @@
             
             <div class="email-list">
               <div class="select-customer-container row">
-                <div class="select-a-customer col-md-10">Staffs</div>
+                <div class="select-a-customer col-md-10">Machines</div>
                 <div class="col-md-2">
-                    <a href="{{route('users.create')}}" class="create-new-customer"> <i class="bi bi-person-add"></i>New Staff</a>
+                    <a href="{{route('machines.create')}}" class="create-new-customer"> <i class="bi bi-person-add"></i>New Machine</a>
                 </div>
               </div>
               <div class="email-container">
                 <div class="table-responsive">
-                    <table id="users-data-table" class="table mb-0 table-hover items_list">
+                    <table id="machines-data-table" class="table mb-0 table-hover items_list">
                         <thead class="table-light">
                             <tr>
                                 <th>Name</th>
-                                <th>Email</th>
-                                <th>Action</th>
+                                <th>Stitches</th>
+                                <th>Last Service</th>
+                                <th>Next Service</th>
+                                <th>Branch</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($users as $user)
-                                <tr class="clickable item" data-url="{{ route('users.show', $user->id) }}">
-                                    <td>{{ $user->name }}</td>
-                                    <td>{{ $user->email }}</td>
-                                    <td></td>
+                            @forelse ($machines as $machine)
+                                <tr class="clickable item" data-url="{{ route('machines.show', $machine->id) }}">
+                                    <td>{{ $machine->name }}</td>
+                                    <td>{{ $machine->stitches_per_hour }}</td>
+                                    <td>{{ $machine->dateOfLastService() }}</td>
+                                    <td>{{ $machine->dateOfNextService() }}</td>
+                                    <td>{{ $machine->branch->name }}</td>
                                 </tr>
                             @empty
                             <tr>
-                                <td colspan="3">No users</td>
+                                <td colspan="5">No machines</td>
                             </tr>
                             @endforelse
                         </tbody>
@@ -68,7 +72,7 @@
 @endsection
 <script>
     window.addEventListener('load', function() {
-        var users_table = $('#users-data-table').DataTable( {
+        var users_table = $('#machines-data-table').DataTable( {
             lengthChange: false,
         } );
 

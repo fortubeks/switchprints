@@ -1,5 +1,7 @@
 @extends('switchprints.layouts.guest')
-
+@push('styles')
+<link rel="stylesheet" href="{{ asset('switchprints') }}/css/login.css" />
+@endpush
 @section('content')
     <div class="login">
       <header class="navigation">

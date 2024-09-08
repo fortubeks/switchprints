@@ -17,4 +17,20 @@ class Machine extends Model
     public function maintenanceRecords(){
         return $this->hasMany(MaintenanceRecord::class);
     }
+
+    public function dateOfLastService(){
+        // Check if there are any maintenance records
+        $latestRecord = $this->maintenanceRecords()->latest('maintenance_date')->first();
+        
+        // If a record exists, return the maintenance_date; otherwise, return '-'
+        return $latestRecord ? $latestRecord->maintenance_date : '-';
+    }
+
+    public function dateOfNextService(){
+         // Check if there are any maintenance records
+         $latestRecord = $this->maintenanceRecords()->latest('next_maintenance_date')->first();
+        
+         // If a record exists, return the maintenance_date; otherwise, return '-'
+         return $latestRecord ? $latestRecord->maintenance_date : '-';
+    }
 }

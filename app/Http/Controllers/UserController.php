@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
     public function index(User $model)
     {
-        return view('users.index', ['users' => $model->paginate(15)]);
+        return view('switchprints.users.index', ['users' => $model->paginate(15)]);
     }
 
     /**
@@ -18,7 +19,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('users.create');
+        return view('switchprints.users.form');
     }
 
     /**
@@ -29,38 +30,24 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $user = User::create([
-            'first_name' => $request->first_name,
-            'middle_name' => $request->middle_name,
-            'last_name' => $request->last_name,
-            'gender' => $request->gender,
-            'phone' => $request->phone,
-            'address' => $request->address,
-            'email' => $request->employee_email,
-            'other_details' => $request->other_details,
-            'role_id' => $request->role_id,
-            'parent_id' => auth()->user()->id,
-            'bank_name'=> $request->bank_name,
-            'bank_account_no'=> $request->bank_account_no,
-            'bank_account_name'=> $request->bank_account_name,
-            'branch_id' => $request->branch_id
-        ]);
-        if($request->is_user == 'yes'){
-            $request->validate([
-                'user_type' => ['required'],
-            ]);
-            $user = User::create([
-                'password' => Hash::make($request->password),
-                'email' => $request->email,
-                'name' => $request->first_name,
-                'employee_id' => $user->id,
-                'user_type' => $request->user_type,
-                'branch_id' => $request->branch_id,
-            ]);
-            $user->user_id = $user->id;
-            $user->save();
-        }
-        return redirect('/users/')->with('status','User added successfully');
+        $request->merge(['password' => Hash::make($request->password)]);
+        $user = User::create($request->all());
+        // if($request->is_user == 'yes'){
+        //     $request->validate([
+        //         'user_type' => ['required'],
+        //     ]);
+        //     $user = User::create([
+        //         'password' => Hash::make($request->password),
+        //         'email' => $request->email,
+        //         'name' => $request->first_name,
+        //         'employee_id' => $user->id,
+        //         'user_type' => $request->user_type,
+        //         'branch_id' => $request->branch_id,
+        //     ]);
+        //     $user->user_id = $user->id;
+        //     $user->save();
+        // }
+        return redirect('users')->with('status','User added successfully');
     }
 
     /**
@@ -71,7 +58,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return view('users.show')->with('user',$user);
+        return view('switchprints.users.form')->with('user',$user);
     }
 
     /**

@@ -17,6 +17,11 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('phone')->nullable();
+            $table->foreignId('role_id');
+            $table->foreignId('branch_id');
+            $table->string('address');
+            $table->string('gender');
             $table->date('visa_expiry_date')->nullable();
             $table->date('health_insurance_expiry_date')->nullable();
             $table->date('labour_card_expiry_date')->nullable();

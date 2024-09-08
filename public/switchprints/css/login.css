@@ -1,3 +1,121 @@
+body {
+  margin: 0;
+  line-height: normal;
+}
+
+:root {
+  /* fonts */
+  --font-sora: Sora;
+  --font-roboto: Roboto;
+
+  /* font sizes */
+  --font-size-base: 16px;
+  --font-size-sm: 14px;
+  --font-size-13xl: 32px;
+  --font-size-lgi: 19px;
+  --font-size-7xl: 26px;
+  --font-size-mini: 15px;
+  --font-size-xl: 20px;
+  --font-size-8xs: 5px;
+  --font-size-2xs: 11px;
+
+  /* Colors */
+  --color-white: #fff;
+  --color-gainsboro: #d9d9d9;
+  --color-blueviolet: #3751ff;
+  --color-black: #000;
+  --color-darkslategray: #333;
+  --color-gray: #f9fbfc;
+  --color-green: #318200;
+  --color-red-100: #ff0000;
+  --color-red-200: #d60000;
+  --color-yellow: #faff00;
+  --color-limegreen: #0fb516;
+
+  /* Gaps */
+  --gap-8xl: 27px;
+  --gap-mini: 15px;
+  --gap-3xl: 22px;
+  --gap-5xs: 8px;
+  --gap-xl: 20px;
+  --gap-lg: 18px;
+  --gap-3xs: 10px;
+  --gap-8xs: 5px;
+  --gap-sm: 14px;
+  --gap-6xl: 25px;
+  --gap-smi-5: 12.5px;
+  --gap-4xs-5: 8.5px;
+  --gap-3xl-7: 22.7px;
+  --gap-14xl-1: 33.1px;
+  --gap-10xs-7: 2.7px;
+  --gap-2xs-5: 10.5px;
+  --gap-mini-5: 14.5px;
+  --gap-smi: 13px;
+  --gap-base: 16px;
+  --gap-19xl: 38px;
+  --gap-lgi: 19px;
+  --gap-5xl: 24px;
+  --gap-4xs: 9px;
+  --gap-45xl: 64px;
+  --gap-60xl: 79px;
+  --gap-11xs: 2px;
+  --gap-12xs: 1px;
+  --gap-base-3: 15.3px;
+
+  /* Paddings */
+  --padding-12xs: 1px;
+  --padding-xl: 20px;
+  --padding-6xl: 25px;
+  --padding-3xs: 10px;
+  --padding-9xs: 4px;
+  --padding-smi: 13px;
+  --padding-14xl: 33px;
+  --padding-5xl: 24px;
+  --padding-11xs: 2px;
+  --padding-30xl: 49px;
+  --padding-base: 16px;
+  --padding-mid: 17px;
+  --padding-8xs-5: 4.5px;
+  --padding-5xs: 8px;
+  --padding-10xs: 3px;
+  --padding-168xl: 187px;
+  --padding-411xl: 430px;
+  --padding-56xl: 75px;
+  --padding-2xs: 11px;
+  --padding-7xs: 6px;
+  --padding-55xl: 74px;
+  --padding-6xs-1: 6.1px;
+  --padding-40xl: 59px;
+  --padding-73xl: 92px;
+  --padding-33xl: 52px;
+  --padding-36xl: 55px;
+  --padding-58xl: 77px;
+  --padding-3xs-5: 9.5px;
+  --padding-mini: 15px;
+  --padding-4xs: 9px;
+  --padding-6xs: 7px;
+  --padding-8xs: 5px;
+  --padding-lgi: 19px;
+  --padding-xs: 12px;
+  --padding-170xl: 189px;
+  --padding-409xl: 428px;
+  --padding-11xs-5: 1.5px;
+  --padding-13xl: 32px;
+  --padding-29xl: 48px;
+  --padding-3xl: 22px;
+  --padding-12xl: 31px;
+  --padding-12xs-5: 0.5px;
+  --padding-2xs-5: 10.5px;
+  --padding-xs-5: 11.5px;
+  --padding-mini-5: 14.5px;
+  --padding-base-5: 15.5px;
+
+  /* Border radiuses */
+  --br-3xs: 10px;
+  --br-8xs: 5px;
+  --br-4xs: 9px;
+}
+
 .auth-container-child {
   height: 110px;
   width: 1440px;

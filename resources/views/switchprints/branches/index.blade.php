@@ -14,9 +14,9 @@
 <main class="new-order-form">
         <header class="new-order-parent">
           <a class="new-order2">Dashboard</a>
-          <div class="user-3296-2-container">
+          <div class="branch-3296-2-container">
             <img
-              class="user-3296-2-icon1"
+              class="branch-3296-2-icon1"
               loading="lazy"
               alt=""
               src="{{ asset('switchprints') }}/public/user3296-2.svg"
@@ -28,31 +28,27 @@
             
             <div class="email-list">
               <div class="select-customer-container row">
-                <div class="select-a-customer col-md-10">Staffs</div>
+                <div class="select-a-customer col-md-10">Branches</div>
                 <div class="col-md-2">
-                    <a href="{{route('users.create')}}" class="create-new-customer"> <i class="bi bi-person-add"></i>New Staff</a>
+                    <a href="{{route('branches.create')}}" class="create-new-customer"> <i class="bi bi-person-add"></i>New Branch</a>
                 </div>
               </div>
               <div class="email-container">
                 <div class="table-responsive">
-                    <table id="users-data-table" class="table mb-0 table-hover items_list">
+                    <table id="branches-data-table" class="table mb-0 table-hover items_list">
                         <thead class="table-light">
                             <tr>
                                 <th>Name</th>
-                                <th>Email</th>
-                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($users as $user)
-                                <tr class="clickable item" data-url="{{ route('users.show', $user->id) }}">
-                                    <td>{{ $user->name }}</td>
-                                    <td>{{ $user->email }}</td>
-                                    <td></td>
+                            @forelse ($branches as $branch)
+                                <tr class="clickable item" data-url="{{ route('branches.show', $branch->id) }}">
+                                    <td>{{ $branch->name }}</td>
                                 </tr>
                             @empty
                             <tr>
-                                <td colspan="3">No users</td>
+                                <td>No branches</td>
                             </tr>
                             @endforelse
                         </tbody>
@@ -68,7 +64,7 @@
 @endsection
 <script>
     window.addEventListener('load', function() {
-        var users_table = $('#users-data-table').DataTable( {
+        var users_table = $('#branches-data-table').DataTable( {
             lengthChange: false,
         } );
 
