@@ -45,42 +45,22 @@
               <img class="vector-icon5" alt="" src="{{ asset('switchprints') }}/public/vector2.svg" />
 
               <div class="new-order">New Order</div>
-              <img
-                class="menu-item-icons"
-                loading="lazy"
-                alt=""
-                src="{{ asset('switchprints') }}/public/vector-6.svg"
-              />
+              <img class="menu-item-icons" loading="lazy" src="{{ asset('switchprints') }}/public/vector-6.svg"/>
             </div>
             <div class="nav-item2" id="navItemContainer1">
               <img class="vector-icon5" alt="" src="{{ asset('switchprints') }}/public/vector2.svg" />
 
               <a class="view-order">View Order</a>
-              <img
-                class="vector-icon7"
-                loading="lazy"
-                alt=""
-                src="{{ asset('switchprints') }}/public/vector-7.svg"
-              />
+              <img class="vector-icon7" loading="lazy" src="{{ asset('switchprints') }}/public/vector-7.svg"/>
             </div>
             <div class="nav-item1" id="navItemContainer2">
               <img class="vector-icon5" alt="" src="{{ asset('switchprints') }}/public/vector2.svg" />
 
-              <div class="new-style">New Style</div>
-              <img
-                class="menu-item-icons"
-                loading="lazy"
-                alt=""
-                src="{{ asset('switchprints') }}/public/vector-6.svg"
-              />
+              <div class="new-style style">New Style</div>
+              <img class="menu-item-icons" loading="lazy" src="{{ asset('switchprints') }}/public/vector-6.svg"/>
             </div>
-            <div class="nav-item4" id="navItemContainer3">
-              <img
-                class="vector-icon10"
-                loading="lazy"
-                alt=""
-                src="{{ asset('switchprints') }}/public/vector-2.svg"
-              />
+            <div class="nav-item4 customers" id="navItemContainer3">
+              <img class="vector-icon10" loading="lazy" src="{{ asset('switchprints') }}/public/vector-2.svg"/>
 
               <a class="customer1">Customer</a>
             </div>
@@ -120,6 +100,21 @@ window.addEventListener('load', function() {
   });
   document.querySelector('.machine').addEventListener('click', function() {
       window.location.href = "{{ route('machines.index') }}";
+  });
+  document.querySelector('.style').addEventListener('click', function() {
+      window.location.href = "{{ route('styles.index') }}";
+  });
+  document.querySelector('.customers').addEventListener('click', function() {
+      window.location.href = "{{ route('customers.index') }}";
+  });
+  document.querySelector('.payment').addEventListener('click', function() {
+      window.location.href = "{{ route('payments.index') }}";
+  });
+  document.querySelector('.view-order').addEventListener('click', function() {
+      window.location.href = "{{ route('orders.index') }}";
+  });
+  document.querySelector('.new-order').addEventListener('click', function() {
+      window.location.href = "{{ route('orders.create') }}";
   });
 });
     

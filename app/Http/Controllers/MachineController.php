@@ -43,21 +43,21 @@ class MachineController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Machine  $branch
+     * @param  \App\Models\Machine  $machine
      * @return \Illuminate\Http\Response
      */
-    public function show(Machine $branch)
+    public function show(Machine $machine)
     {
-        return view('switchprints.machines.form')->with('branch',$branch);
+        return view('switchprints.machines.form')->with('machine',$machine);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Machine  $branch
+     * @param  \App\Models\Machine  $machine
      * @return \Illuminate\Http\Response
      */
-    public function edit(Machine $branch)
+    public function edit(Machine $machine)
     {
         //
     }
@@ -66,15 +66,15 @@ class MachineController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Machine  $branch
+     * @param  \App\Models\Machine  $machine
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Machine $branch)
+    public function update(Request $request, Machine $machine)
     {
         $request->validate([
             'name' => 'required'
         ]);
-        $branch->update($request->all());
+        $machine->update($request->all());
         
         return redirect('/machines')->with('status','Update succesful');
     }
@@ -82,12 +82,12 @@ class MachineController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Machine  $branch
+     * @param  \App\Models\Machine  $machine
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Machine $branch)
+    public function destroy(Machine $machine)
     {        
-        $branch->delete();
+        $machine->delete();
         
         return redirect('/machines')->with('status','Delete succesful');
     }

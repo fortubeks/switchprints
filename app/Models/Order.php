@@ -9,7 +9,7 @@ class Order extends Model
 {
     use HasFactory;
     protected $fillable = ['customer_id','branch_id','status','order_date','expected_delivery_date','total_amount',
-        'date_collected'];
+        'date_collected','user_id'];
 
     public function branch(){
         return $this->belongsTo(Branch::class);

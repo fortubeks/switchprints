@@ -8,6 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Style extends Model
 {
     use HasFactory;
-    protected $fillable = ['name','stitches','amount','description'];
+    protected $fillable = ['name','stitches','price','description'];
 
 }

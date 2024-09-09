@@ -9,6 +9,7 @@ class Job extends Model
 {
     use HasFactory;
     protected $fillable = ['style_id','machine_id','amount','expected_delivery_date','status'];
+    protected $table = 'order_jobs';
 
     public function branch(){
         return $this->belongsTo(Branch::class);

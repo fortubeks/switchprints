@@ -2,7 +2,10 @@
 
 use App\Models\Branch;
 use App\Models\Country;
+use App\Models\Customer;
+use App\Models\Machine;
 use App\Models\Role;
+use App\Models\Style;
 use Magarrent\LaravelCurrencyFormatter\Facades\Currency;
 use App\Models\User;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -26,6 +29,15 @@ function getModelList($model){
     }
     if($model == 'branches'){
         $model_list = Branch::all();
+    }
+    if($model == 'customers'){
+        $model_list = Customer::all();
+    }
+    if($model == 'styles'){
+        $model_list = Style::all();
+    }
+    if($model == 'machines'){
+        $model_list = Machine::where('branch_id',auth()->user()->branch_id)->get();
     }
     
     return $model_list;

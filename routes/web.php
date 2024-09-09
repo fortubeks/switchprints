@@ -23,6 +23,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('machines', App\Http\Controllers\MachineController::class)->names('machines');
     Route::resource('payments', App\Http\Controllers\PaymentController::class)->names('payments');
 
+    Route::get('get-customer-info', [App\Http\Controllers\CustomerController::class, 'getCustomerInfo']);
 });
 
 require __DIR__.'/auth.php';
