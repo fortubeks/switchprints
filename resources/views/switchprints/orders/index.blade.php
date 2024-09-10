@@ -15,12 +15,7 @@
         <header class="new-order-parent">
           <a class="new-order2">Dashboard</a>
           <div class="customer-3296-2-container">
-            <img
-              class="customer-3296-2-icon1"
-              loading="lazy"
-              alt=""
-              src="{{ asset('switchprints') }}/public/user3296-2.svg"
-            />
+            <img class="customer-3296-2-icon1" loading="lazy" src="{{ asset('switchprints') }}/public/user3296-2.svg"/>
           </div>
         </header>
         <section class="order-details-container-wrapper">

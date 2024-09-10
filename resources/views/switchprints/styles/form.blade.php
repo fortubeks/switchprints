@@ -30,26 +30,37 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
-                                <form action="{{ isset($style) ? route('styles.update', $style->id) : route('styles.store') }}" method="POST">
+                                <form action="{{ isset($style) ? route('styles.update', $style->id) : route('styles.store') }}" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     @if(isset($style))
                                         @method('PUT')
                                     @endif
 
                                     <div class="row mb-4">
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <label for="name"> Name</label>
                                             <input type="text" class="form-control" id="name" name="name" value="{{ old('name', $style->name ?? '') }}" required>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <label for="stitches">Stitches</label>
                                             <input type="number" class="form-control" id="stitches" name="stitches" value="{{ old('stitches', $style->stitches ?? '') }}" required>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                           <label for="price">Price</label>
                                           <input type="number" class="form-control" id="price" name="price" value="{{ old('price', $style->price ?? '') }}" required>
                                         </div>
+                                        <div class="col-md-3">
+                                          <label for="price">Image</label>
+                                          <input type="file" class="form-control" name="image" >
+                                        </div>
                                     </div>
+                                    @if(isset($style))
+                                    <div class="col-md-12 mb-4">
+                                      <?php $url =  asset('/storage/styles/'.$style->image); ?>
+                                      <a href="{{ $url }}" target="_blank" onclick="window.open('{{ $url }}', 'popup'); return false;">
+                                      <img class="img-thumbnail" width="200px" style="margin-right: 20px;" src="{{ $url }}"/> </a>
+                                    </div>
+                                    @endif
 
                                     <!-- Submit Button -->
                                     <button type="submit" class="btn btn-primary">{{ isset($style) ? 'Update' : 'Create' }}</button>

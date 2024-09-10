@@ -14,6 +14,10 @@ class Customer extends Model
         return $this->belongsTo(Branch::class);
     }
 
+    public function orders(){
+        return $this->hasMany(Order::class);
+    }
+
     public function totalSales(){
         return 0;
     }

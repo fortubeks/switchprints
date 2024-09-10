@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreOrderRequest;
+use App\Models\Machine;
 use App\Models\Order;
+use App\Models\Style;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -35,7 +38,7 @@ class OrderController extends Controller
         //the expected delivery date is calculated by getting all the jobs belonging to the machine
         // whose status is pending, 
         //get the expected delivery of the latest one then calculate 
-        $expected_delivery_date = '23/09/24';
+        $expected_delivery_date = now(); 
         $total_amount = 0;
         // Create the order
         $order = Order::create([
@@ -49,11 +52,26 @@ class OrderController extends Controller
 
         // Loop through each style and machine to attach them to the order
         foreach ($request->style_id as $key => $styleId) {
-            $expected_job_delivery_date = '22/09/24';
+            $expected_job_delivery_date = now();
 
              // Calculate total amount by summing up amounts
             $amount = $request->amount[$key];
             $total_amount += $amount;
+
+            //get the machine that was selected
+            //get the number of stitches per hour of the machine
+            //get the number of stitches the style needs
+            $selected_machine =  Machine::find($request->machine_id[$key]);
+            $selected_machine_stitches_per_hour = $selected_machine->stitches_per_hour; //50
+            $style_stitches = Style::find($styleId)->stitches; //300
+            //calculate the time the machine will round up the job
+            $expected_job_delivery_date = Carbon::now()->addHours(ceil($style_stitches / $selected_machine_stitches_per_hour));
+            if($expected_job_delivery_date > $expected_delivery_date){
+                $expected_delivery_date = $expected_job_delivery_date;
+                $order->update([
+                    'expected_delivery_date' => $expected_delivery_date
+                ]);
+            }
             
             $order->jobs()->create([
                 'style_id' => $styleId,

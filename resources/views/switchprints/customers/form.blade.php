@@ -20,7 +20,7 @@
             
             <div class="email-list">
               <div class="select-customer-container row">
-                <div class="select-a-customer col-md-10">{{ isset($customer) ? 'Edit Customer' : 'Create Customer' }}</div>
+                <div class="select-a-customer col-md-10">{{ isset($customer) ? 'Customer Details' : 'Create Customer' }}</div>
                 <!-- <div class="col-md-2">
                     <a href="{{route('customers.create')}}" class="create-new-customer"> <i class="bi bi-person-add"></i>New Staff</a>
                 </div> -->
@@ -69,6 +69,39 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="row">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <table id="orders-data-table" class="table mb-0 table-hover items_list">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Customer</th>
+                                    <th>Amount</th>
+                                    <th>Expected Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($customer->orders as $order)
+                                  <tr class="clickable item" data-url="{{ route('orders.show', $order->id) }}">
+                                    <td>{{ $order->customer->name }}</td>
+                                    <td>{{ $order->total_amount }}</td>
+                                    <td>{{ $order->expected_delivery_date }}</td>
+                                    <td>{{ $order->status }}</td>
+                                  </tr>
+                                    
+                                @empty
+                                <tr>
+                                    <td colspan="5">No orders</td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

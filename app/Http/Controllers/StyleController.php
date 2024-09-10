@@ -35,7 +35,23 @@ class StyleController extends Controller
             'stitches' => 'required',
             'price' => 'required'
         ]);
-        Style::create($request->all());
+        $style = Style::create($request->all());
+
+        if($request->file('image')){
+            $allowedExtensions=['pdf','jpg','png','jpeg'];
+            $file = $request->file('image');
+            if ($file->isValid() && in_array($file->getClientOriginalExtension(), $allowedExtensions)) {
+                // Generate a unique filename to avoid conflicts
+                $newFilename = time() . '_' . str_replace(' ', '_', $file->getClientOriginalName());
+    
+                // Store the image in the 'styles' disk
+                $path = $file->storeAs('styles', $newFilename, 'public');
+    
+                // Update the style's image attribute
+                $style->image = $path;
+                $style->save();
+            }
+        }
 
         return redirect('styles')->with('status','Style added successfully');
     }
