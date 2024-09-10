@@ -70,6 +70,7 @@
                         </div>
                     </div>
                 </div>
+                @if(isset($customer))
                 <div class="row">
                   <div class="card">
                     <div class="card-body">
@@ -103,6 +104,7 @@
                     </div>
                   </div>
                 </div>
+                @endif
               </div>
             </div>
           </div>

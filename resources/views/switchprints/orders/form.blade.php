@@ -105,7 +105,7 @@
                                     <div class="row mb-4 d-none sample-row" id="sample-row">
                                         <div class="col-md-4">
                                             <label for="branch_id">Style</label>
-                                            <select class="form-control form-select style-select" name="style_id[]">
+                                            <select class="form-control form-select style-select" data-name="style_id[]">
                                                 <option>--Select Style--</option>
                                                 @foreach(getModelList('styles') as $style)
                                                 <option value="{{$style->id}}" data-amount="{{$style->price}}">{{$style->name}}</option>
@@ -114,7 +114,7 @@
                                         </div>
                                         <div class="col-md-4">
                                             <label for="branch_id">Machine</label>
-                                            <select class="form-control form-select" name="machine_id[]">
+                                            <select class="form-control form-select" data-name="machine_id[]">
                                                 @foreach(getModelList('machines') as $machine)
                                                 <option value="{{$machine->id}}">{{$machine->name}}</option>
                                                 @endforeach
@@ -122,7 +122,7 @@
                                         </div>
                                         <div class="col-md-2">
                                             <label for="total_amount">Amount</label>
-                                            <input type="text" readonly name="amount[]" class="form-control total-amount">
+                                            <input type="text" readonly data-name="amount[]" class="form-control total-amount">
                                         </div>
                                         <div class="col-md-2">
                                         <button type="button" class="btn btn-danger remove-row mt-3">Remove</button>
@@ -179,8 +179,13 @@
     // Add new row
     $('#add-row').click(function() {
         // Clone the sample row
-        var newRow = $('#sample-row').clone().removeClass('d-none').removeAttr('id');
+        var newRow = $('#sample-row').clone().removeClass('d-none sample-row').removeAttr('id');
         
+        // Assign name attributes to the cloned inputs
+        newRow.find('select, input').each(function() {
+            $(this).attr('name', $(this).data('name'));
+        });
+
         // Append the new row to the container
         $('#row-container').append(newRow);
     });
