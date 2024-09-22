@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreOrderRequest;
+use App\Models\Customer;
+use App\Models\Design;
+use App\Models\Job;
 use App\Models\Machine;
 use App\Models\Order;
 use App\Models\Style;
@@ -40,20 +43,27 @@ class OrderController extends Controller
         //get the expected delivery of the latest one then calculate 
         $expected_delivery_date = now(); 
         $total_amount = 0;
+        $customer_id = $request->customer_id;
+        if(!isset($customer_id)){
+            $customer = Customer::create([
+                'name' => $request->customer_name,
+                'phone' => $request->phone,
+                'address' => $request->customer_address,
+                'branch_id' => auth()->user()->branch_id,
+            ]);
+            $customer_id = $customer->id;
+        }
         // Create the order
         $order = Order::create([
-            'customer_id' => $request->customer_id,
+            'customer_id' => $customer_id,
             'order_date' => $request->order_date,
-            'user_id' => auth()->id(),
             'expected_delivery_date' => $expected_delivery_date,
             'branch_id' => auth()->user()->branch_id,
             'user_id' => auth()->user()->id
         ]);
 
-        // Loop through each style and machine to attach them to the order
-        foreach ($request->style_id as $key => $styleId) {
-            $expected_job_delivery_date = now();
-
+        // Loop through each design and machine to attach them to the order
+        foreach ($request->design_id as $key => $designId) {
              // Calculate total amount by summing up amounts
             $amount = $request->amount[$key];
             $total_amount += $amount;
@@ -61,23 +71,23 @@ class OrderController extends Controller
             //get the machine that was selected
             //get the number of stitches per hour of the machine
             //get the number of stitches the style needs
-            $selected_machine =  Machine::find($request->machine_id[$key]);
-            $selected_machine_stitches_per_hour = $selected_machine->stitches_per_hour; //50
-            $style_stitches = Style::find($styleId)->stitches; //300
-            //calculate the time the machine will round up the job
-            $expected_job_delivery_date = Carbon::now()->addHours(ceil($style_stitches / $selected_machine_stitches_per_hour));
-            if($expected_job_delivery_date > $expected_delivery_date){
-                $expected_delivery_date = $expected_job_delivery_date;
+            // $selected_machine =  Machine::find($request->machine_id[$key]);
+            // $selected_machine_stitches_per_shift = $selected_machine->stitches_per_shift; //50
+            // $design_stitches = Design::find($designId)->stitches; //300
+            // //calculate the time the machine will round up the job
+            // $expected_job_delivery_date = Carbon::now()->addHours(ceil($design_stitches / $selected_machine_stitches_per_shift));
+            if($request->expected_job_delivery_date[$key] > $expected_delivery_date){
+                $expected_delivery_date = $request->expected_job_delivery_date[$key];
                 $order->update([
                     'expected_delivery_date' => $expected_delivery_date
                 ]);
             }
             
             $order->jobs()->create([
-                'style_id' => $styleId,
+                'design_id' => $designId,
                 'machine_id' => $request->machine_id[$key],
                 'amount' => $request->amount[$key],
-                'expected_delivery_date' => $expected_job_delivery_date,
+                'expected_delivery_date' => $request->expected_job_delivery_date[$key],
             ]);
         }
 
@@ -96,7 +106,7 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        return view('switchprints.orders.form')->with('order',$order);
+        return view('switchprints.orders.show')->with('order',$order);
     }
 
     /**
@@ -140,5 +150,44 @@ class OrderController extends Controller
         $order->delete();
         
         return redirect('/orders')->with('status','Delete succesful');
+    }
+
+    public function getEdd(Request $request)
+    {
+        $machine_id = $request->machineId;
+        $design_id = $request->designId;
+
+        // Fetch machine and design models
+        $machine = Machine::findOrFail($machine_id);
+        $design = Design::findOrFail($design_id);
+
+        // Calculate the current job's estimated time (stitches / stitches per shift)
+        $daysForThisJob = round($design->stitches / $machine->stitches_per_shift);
+        $thisJobCurrentEdd = now()->addDays($daysForThisJob); // Add hours to current time
+
+        // Get the last job's expected delivery date for this machine
+        $machineLastJob = $machine->jobs()->orderBy('expected_delivery_date', 'desc')->first();
+        $machineLastEdd = $machineLastJob ? $machineLastJob->expected_delivery_date : now();
+
+        // Calculate final EDD (current job's time + last job's EDD)
+        $edd = $machineLastEdd->greaterThan(now()) ? $machineLastEdd->addDays($daysForThisJob) : $thisJobCurrentEdd;
+
+        return response()->json([
+            'edd' => $edd->toDateTimeString(),
+        ]);
+    }
+
+    public function updateJobStatus(Request $request)
+    {
+        $request->validate([
+            'job_id' => 'required',
+            'status' => 'required',
+        ]);
+        $job = Job::findorFail($request->job_id);
+        $job->update(['status' => $request->status]);
+        
+        return response()->json([
+            'status' => 'Update successful',
+        ]);
     }
 }

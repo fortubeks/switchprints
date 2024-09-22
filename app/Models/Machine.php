@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Machine extends Model
 {
     use HasFactory;
-    protected $fillable = ['name','branch_id','stitches_per_hour','required_maintenance_per_year'];
+    protected $fillable = ['name','branch_id','stitches_per_shift','required_maintenance_per_year'];
 
     public function branch(){
         return $this->belongsTo(Branch::class);
@@ -16,6 +16,10 @@ class Machine extends Model
 
     public function maintenanceRecords(){
         return $this->hasMany(MaintenanceRecord::class);
+    }
+
+    public function jobs(){
+        return $this->hasMany(Job::class);
     }
 
     public function dateOfLastService(){

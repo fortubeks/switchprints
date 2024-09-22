@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('machines', function (Blueprint $table) {
+        Schema::create('designs', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('stitches_per_shift');
-            $table->integer('required_maintenance_per_year');
-            $table->foreignId('branch_id')->nullable();
+            $table->decimal('price',8,2);
+            $table->integer('stitches');
+            $table->string('image')->nullable();
+            $table->string('dst')->nullable();
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('machines');
+        Schema::dropIfExists('styles');
     }
 };

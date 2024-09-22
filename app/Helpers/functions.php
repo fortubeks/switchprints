@@ -1,10 +1,13 @@
 <?php
 
+use App\Models\AssignedShift;
 use App\Models\Branch;
 use App\Models\Country;
 use App\Models\Customer;
+use App\Models\Design;
 use App\Models\Machine;
 use App\Models\Role;
+use App\Models\Shift;
 use App\Models\Style;
 use Magarrent\LaravelCurrencyFormatter\Facades\Currency;
 use App\Models\User;
@@ -33,8 +36,17 @@ function getModelList($model){
     if($model == 'customers'){
         $model_list = Customer::all();
     }
-    if($model == 'styles'){
-        $model_list = Style::all();
+    if($model == 'designs'){
+        $model_list = Design::all();
+    }
+    if($model == 'users'){
+        $model_list = User::all();
+    }
+    if($model == 'shifts'){
+        $model_list = Shift::all();
+    }
+    if($model == 'assigned-shifts'){
+        $model_list = AssignedShift::all();
     }
     if($model == 'machines'){
         $model_list = Machine::where('branch_id',auth()->user()->branch_id)->get();

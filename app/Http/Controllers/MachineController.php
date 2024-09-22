@@ -32,7 +32,7 @@ class MachineController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'stitches_per_hour' => 'required'
+            'stitches_per_shift' => 'required'
         ]);
         $request->merge(['required_maintenance_per_year' => 4]);
         Machine::create($request->all());

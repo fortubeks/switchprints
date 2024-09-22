@@ -25,7 +25,7 @@ class StoreOrderRequest extends FormRequest
         return [
             // Other validation rules...
             'customer_id' => 'nullable|exists:customers,id',
-            'name' => $this->customer_id ? 'nullable' : 'required|string|max:255',
+            'customer_name' => $this->customer_id ? 'nullable' : 'required|string|max:255',
             'style_id.*' => 'required|exists:styles,id',
             'machine_id.*' => 'required|exists:machines,id',
             'amount.*' => 'required|numeric',
@@ -36,7 +36,7 @@ class StoreOrderRequest extends FormRequest
                 'nullable',
                 Rule::unique('customers')
                     ->whereNotNull('phone')
-                    ->ignore($this->customer_id, 'id'), // Ignore validation if guest_id is present
+                    ->ignore($this->customer_id, 'id'), // Ignore validation if customer_id is present
             ],
         ];
     }

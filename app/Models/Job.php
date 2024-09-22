@@ -8,8 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Job extends Model
 {
     use HasFactory;
-    protected $fillable = ['style_id','machine_id','amount','expected_delivery_date','status'];
+    protected $fillable = ['design_id','machine_id','amount','expected_delivery_date','status'];
     protected $table = 'order_jobs';
+    protected $casts = [
+        'expected_delivery_date' => 'datetime',
+    ];
 
     public function branch(){
         return $this->belongsTo(Branch::class);
@@ -19,8 +22,8 @@ class Job extends Model
         return $this->belongsTo(Order::class);
     }
 
-    public function style(){
-        return $this->belongsTo(Style::class);
+    public function design(){
+        return $this->belongsTo(Design::class);
     }
 
     public function machine(){

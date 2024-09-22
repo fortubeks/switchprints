@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->foreignId('role_id');
             $table->foreignId('branch_id');
+            $table->foreignId('machine_id')->nullable();
             $table->string('address');
             $table->string('gender');
             $table->date('visa_expiry_date')->nullable();

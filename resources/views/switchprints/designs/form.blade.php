@@ -20,9 +20,9 @@
             
             <div class="email-list">
               <div class="select-customer-container row">
-                <div class="select-a-customer col-md-10">{{ isset($style) ? 'Edit Style' : 'Create Style' }}</div>
+                <div class="select-a-customer col-md-10">{{ isset($design) ? 'Edit Design' : 'Create Design' }}</div>
                 <!-- <div class="col-md-2">
-                    <a href="{{route('styles.create')}}" class="create-new-customer"> <i class="bi bi-person-add"></i>New Staff</a>
+                    <a href="{{route('designs.create')}}" class="create-new-customer"> <i class="bi bi-person-add"></i>New Staff</a>
                 </div> -->
               </div>
               <div class="email-container">
@@ -30,41 +30,47 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
-                                <form action="{{ isset($style) ? route('styles.update', $style->id) : route('styles.store') }}" method="POST" enctype="multipart/form-data">
+                                <form action="{{ isset($design) ? route('designs.update', $design->id) : route('designs.store') }}" method="POST" enctype="multipart/form-data">
                                     @csrf
-                                    @if(isset($style))
+                                    @if(isset($design))
                                         @method('PUT')
                                     @endif
 
                                     <div class="row mb-4">
-                                        <div class="col-md-3">
+                                        <div class="col-md-4">
                                             <label for="name"> Name</label>
-                                            <input type="text" class="form-control" id="name" name="name" value="{{ old('name', $style->name ?? '') }}" required>
+                                            <input type="text" class="form-control" id="name" name="name" value="{{ old('name', $design->name ?? '') }}" required>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-4">
                                             <label for="stitches">Stitches</label>
-                                            <input type="number" class="form-control" id="stitches" name="stitches" value="{{ old('stitches', $style->stitches ?? '') }}" required>
+                                            <input type="number" class="form-control" id="stitches" name="stitches" value="{{ old('stitches', $design->stitches ?? '') }}" required>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-4">
                                           <label for="price">Price</label>
-                                          <input type="number" class="form-control" id="price" name="price" value="{{ old('price', $style->price ?? '') }}" required>
-                                        </div>
-                                        <div class="col-md-3">
-                                          <label for="price">Image</label>
-                                          <input type="file" class="form-control" name="image" >
+                                          <input type="number" class="form-control" id="price" name="price" value="{{ old('price', $design->price ?? '') }}" required>
                                         </div>
                                     </div>
-                                    @if(isset($style))
+                                    <div class="row mb-4">
+                                        <div class="col-md-4">
+                                          <label for="price">Image</label>
+                                          <input type="file" class="form-control" name="dst" >
+                                        </div>
+                                        <div class="col-md-4">
+                                          <label for="price">DST</label>
+                                          <input type="file" class="form-control" name="dst" >
+                                        </div>
+                                    </div>
+                                    @if(isset($design))
                                     <div class="col-md-12 mb-4">
-                                      <?php $url =  asset('/storage/styles/'.$style->image); ?>
+                                      <?php $url =  asset('/storage/designs/'.$design->image); ?>
                                       <a href="{{ $url }}" target="_blank" onclick="window.open('{{ $url }}', 'popup'); return false;">
-                                      <img class="img-thumbnail" width="200px" style="margin-right: 20px;" src="{{ $url }}"/> </a>
+                                      <img class="img-thumbnail" width="200px" design="margin-right: 20px;" src="{{ $url }}"/> </a>
                                     </div>
                                     @endif
 
                                     <!-- Submit Button -->
-                                    <button type="submit" class="btn btn-primary">{{ isset($style) ? 'Update' : 'Create' }}</button>
-                                    <a href="{{ route('styles.index') }}" class="btn btn-secondary">Cancel</a>
+                                    <button type="submit" class="btn btn-primary">{{ isset($design) ? 'Update' : 'Create' }}</button>
+                                    <a href="{{ route('designs.index') }}" class="btn btn-secondary">Cancel</a>
                                 </form>
                             </div>
                         </div>

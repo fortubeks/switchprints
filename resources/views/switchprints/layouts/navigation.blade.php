@@ -56,7 +56,7 @@
             <div class="nav-item1" id="navItemContainer2">
               <img class="vector-icon5" alt="" src="{{ asset('switchprints') }}/public/vector2.svg" />
 
-              <div class="new-style style">New Style</div>
+              <div class="new-style design">Designs</div>
               <img class="menu-item-icons" loading="lazy" src="{{ asset('switchprints') }}/public/vector-6.svg"/>
             </div>
             <div class="nav-item4 customers" id="navItemContainer3">
@@ -101,8 +101,8 @@ window.addEventListener('load', function() {
   document.querySelector('.machine').addEventListener('click', function() {
       window.location.href = "{{ route('machines.index') }}";
   });
-  document.querySelector('.style').addEventListener('click', function() {
-      window.location.href = "{{ route('styles.index') }}";
+  document.querySelector('.design').addEventListener('click', function() {
+      window.location.href = "{{ route('designs.index') }}";
   });
   document.querySelector('.customers').addEventListener('click', function() {
       window.location.href = "{{ route('customers.index') }}";

@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('styles', function (Blueprint $table) {
+        Schema::create('assigned_shifts', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->decimal('price',8,2);
-            $table->integer('stitches');
-            $table->string('image')->nullable();
-            $table->string('description')->nullable();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('shift_id')->constrained()->onDelete('cascade');
+            $table->foreignId('machine_id')->constrained()->onDelete('cascade');
+            $table->date('date');
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('styles');
+        Schema::dropIfExists('assigned_shifts');
     }
 };

@@ -42,8 +42,8 @@
                                             <input type="text" class="form-control" id="name" name="name" value="{{ old('name', $machine->name ?? '') }}" required>
                                         </div>
                                         <div class="col-md-4">
-                                            <label for="stitches_per_hour">Stitches</label>
-                                            <input type="number" class="form-control" id="stitches_per_hour" name="stitches_per_hour" value="{{ old('stitches_per_hour', $machine->stitches_per_hour ?? '') }}" required>
+                                            <label for="stitches_per_shift">Stitches</label>
+                                            <input type="number" class="form-control" id="stitches_per_shift" name="stitches_per_shift" value="{{ old('stitches_per_shift', $machine->stitches_per_shift ?? '') }}" required>
                                         </div>
                                         <div class="col-md-4">
                                             <label for="branch">Branch</label>

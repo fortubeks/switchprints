@@ -53,4 +53,9 @@ class User extends Authenticatable
     {
         return $this->roles()->where('name', $role)->exists();
     }
+
+    public function assignedShifts()
+    {
+        return $this->hasMany(AssignedShift::class);
+    }
 }

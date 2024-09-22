@@ -28,31 +28,35 @@
             
             <div class="email-list">
               <div class="select-customer-container row">
-                <div class="select-a-customer col-md-10">Styles</div>
+                <div class="select-a-customer col-md-10">Designs</div>
                 <div class="col-md-2">
-                    <a href="{{route('styles.create')}}" class="create-new-customer"> <i class="bi bi-person-add"></i>New Style</a>
+                    <a href="{{route('designs.create')}}" class="create-new-customer"> <i class="bi bi-person-add"></i>New Design</a>
                 </div>
               </div>
               <div class="email-container">
                 <div class="table-responsive">
-                    <table id="styles-data-table" class="table mb-0 table-hover items_list">
+                    <table id="designs-data-table" class="table mb-0 table-hover items_list">
                         <thead class="table-light">
                             <tr>
                                 <th>Name</th>
+                                <th>Image</th>
                                 <th>Stitches</th>
                                 <th>Price</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($styles as $style)
-                                <tr class="clickable item" data-url="{{ route('styles.show', $style->id) }}">
-                                    <td>{{ $style->name }}</td>
-                                    <td>{{ $style->stitches }}</td>
-                                    <td>{{ $style->price }}</td>
+                            @forelse ($designs as $design)
+                                <tr class="clickable item" data-url="{{ route('designs.show', $design->id) }}">
+                                    <td>{{ $design->name }}</td>
+                                    <td><?php $url =  asset('/storage/designs/'.$design->image); ?>
+                                      <a href="{{ $url }}" target="_blank" onclick="window.open('{{ $url }}', 'popup'); return false;">
+                                      <img class="img-thumbnail" width="150px" design="margin-right: 20px;" src="{{ $url }}"/> </a></td>
+                                    <td>{{ $design->stitches }}</td>
+                                    <td>{{ $design->price }}</td>
                                 </tr>
                             @empty
                             <tr>
-                                <td colspan="3">No styles</td>
+                                <td colspan="3">No designs</td>
                             </tr>
                             @endforelse
                         </tbody>
@@ -68,7 +72,7 @@
 @endsection
 <script>
     window.addEventListener('load', function() {
-        var users_table = $('#styles-data-table').DataTable( {
+        var users_table = $('#designs-data-table').DataTable( {
             lengthChange: false,
         } );
 

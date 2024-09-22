@@ -21,9 +21,9 @@
             <div class="email-list">
               <div class="select-customer-container row">
                 <div class="select-a-customer col-md-10">{{ isset($user) ? 'Edit User' : 'Create User' }}</div>
-                <!-- <div class="col-md-2">
-                    <a href="{{route('users.create')}}" class="create-new-customer"> <i class="bi bi-person-add"></i>New Staff</a>
-                </div> -->
+                <div class="col-md-2">
+                    <a href="{{route('shifts.assign.view')}}" class="create-new-customer"> <i class="bi bi-person-add"></i>Assign Shifts</a>
+                </div>
               </div>
               <div class="email-container">
                 <div class="row">
@@ -86,7 +86,14 @@
                                             <input type="password" class="form-control" id="password" name="password" {{ isset($user) ? '' : 'required' }}>
                                         </div>
                                         <div class="col-md-4">
-                                            
+                                            @if($user)
+                                            <label for="machine_id">Machine</label>
+                                            <select class="form-control form-select" id="machine_id" name="machine_id" required>
+                                                @foreach(getModelList('machines') as $machine)
+                                                <option value="{{$machine->id}}" {{ (old('machine_id', $user->machine_id ?? '') == $machine->id) ? 'selected' : '' }}>{{$machine->name}}</option>
+                                                @endforeach
+                                            </select>
+                                            @endif
                                         </div>
                                     </div>
 
