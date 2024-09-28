@@ -13,6 +13,11 @@
           <a class="new-order2">Orders</a>
           <div class="order-3296-2-container">
             <img class="order-3296-2-icon1" loading="lazy" src="{{ asset('switchprints') }}/public/user3296-2.svg"/>
+            <ul class="dropdown-menu">
+                <li><a href="/profile">Profile</a></li>
+                <li><a href="/settings">Settings</a></li>
+                <li><a href="/logout">Sign Out</a></li>
+            </ul>
           </div>
         </header>
         <section class="order-details-container-wrapper">
@@ -82,7 +87,7 @@
                                             <select class="form-control form-select design-select"  name="design_id[]">
                                                 <option value="">--Select Design--</option>
                                                 @foreach(getModelList('designs') as $design)
-                                                <option value="{{$design->id}}" {{ (old('design_id', $order->design_id ?? '') == $design->name) ? 'selected' : '' }} data-amount="{{$design->price}}">{{$design->name}}</option>
+                                                <option value="{{$design->id}}" data-amount="{{$design->price}}">{{$design->name}} ({{number_format($design->stitches)}})</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -91,7 +96,7 @@
                                             <select class="form-control form-select machine-select" name="machine_id[]">
                                                 <option value="">--Select Machine--</option>
                                                 @foreach(getModelList('machines') as $machine)
-                                                <option value="{{$machine->id}}" {{ (old('design_id', $order->machine_id ?? '') == $machine->name) ? 'selected' : '' }}>{{$machine->name}}</option>
+                                                <option value="{{$machine->id}}">{{$machine->name}} ({{number_format($machine->stitches_per_shift)}})</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -113,7 +118,7 @@
                                             <select class="form-control form-select design-select" data-name="design_id[]">
                                                 <option value="">--Select Design--</option>
                                                 @foreach(getModelList('designs') as $design)
-                                                <option value="{{$design->id}}" data-amount="{{$design->price}}">{{$design->name}}</option>
+                                                <option value="{{$design->id}}" data-amount="{{$design->price}}">{{$design->name}} ({{number_format($design->stitches)}})</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -122,7 +127,7 @@
                                             <select class="form-control form-select machine-select" data-name="machine_id[]">
                                                 <option value="">--Select Machine--</option>
                                                 @foreach(getModelList('machines') as $machine)
-                                                <option value="{{$machine->id}}">{{$machine->name}}</option>
+                                                <option value="{{$machine->id}}">{{$machine->name}} ({{number_format($machine->stitches_per_shift)}})</option>
                                                 @endforeach
                                             </select>
                                         </div>

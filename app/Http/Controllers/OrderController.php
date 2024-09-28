@@ -163,14 +163,32 @@ class OrderController extends Controller
 
         // Calculate the current job's estimated time (stitches / stitches per shift)
         $daysForThisJob = round($design->stitches / $machine->stitches_per_shift);
-        $thisJobCurrentEdd = now()->addDays($daysForThisJob); // Add hours to current time
+        $thisJobCurrentEdd = now()->addDays($daysForThisJob); // Add days based on stitches
 
-        // Get the last job's expected delivery date for this machine
-        $machineLastJob = $machine->jobs()->orderBy('expected_delivery_date', 'desc')->first();
-        $machineLastEdd = $machineLastJob ? $machineLastJob->expected_delivery_date : now();
+        // Retrieve machine EDD from session, if exists
+        $machinesEdd = session()->get('machines-edd', []);
 
-        // Calculate final EDD (current job's time + last job's EDD)
-        $edd = $machineLastEdd->greaterThan(now()) ? $machineLastEdd->addDays($daysForThisJob) : $thisJobCurrentEdd;
+        // If the session for machine's EDD is empty, calculate based on the database
+        if (empty($machinesEdd[$machine->id])) {
+            // Get the last job's expected delivery date for this machine from the database
+            $machineLastJob = $machine->jobs()->orderBy('expected_delivery_date', 'desc')->first();
+            $machineLastEdd = $machineLastJob ? $machineLastJob->expected_delivery_date : now();
+
+            // Initialize machine EDD in session
+            $machinesEdd[$machine->id] = $machineLastEdd; 
+        }
+
+        // Get the machine's last EDD from session
+        $machineLastEdd = $machinesEdd[$machine->id];
+
+        // Calculate the final EDD: compare last EDD from session or DB and current job EDD
+        $edd = $machineLastEdd->greaterThan(now()) 
+            ? $machineLastEdd->addDays($daysForThisJob) // If last job EDD is in the future, add to it
+            : $thisJobCurrentEdd; // Otherwise, use the current job EDD
+
+        // Update session with the new calculated EDD for the machine
+        $machinesEdd[$machine->id] = $edd;
+        session()->put('machines-edd', $machinesEdd);
 
         return response()->json([
             'edd' => $edd->toDateTimeString(),

@@ -16,18 +16,13 @@
 
         <div class="customer clickable staff">Staff</div>
 
-        <div class="frame-parent">
+        <div class="frame-parent ">
           <img class="frame-child" loading="lazy" alt="" src="{{ asset('switchprints') }}/public/group-1@2x.png"/>
 
-          <div class="nav-item" id="navItemContainer">
-            <img
-              class="icon"
-              loading="lazy"
-              alt=""
-              src="{{ asset('switchprints') }}/public/vector-3.svg"
-            />
+          <div class="nav-item " id="navItemContainer">
+            <img class="icon" loading="lazy" src="{{ asset('switchprints') }}/public/vector-3.svg"/>
 
-            <a class="dashboard1">Dashboard</a>
+            <a href="{{route('dashboard')}}" class="dashboard1">Dashboard</a>
           </div>
           <div class="order-placement">
             <div class="order-summary">
@@ -67,29 +62,24 @@
           </div>
         </div>
         <div class="user-settings">
-          <img
-            class="settings-input-composite"
-            loading="lazy"
-            alt=""
-            src="{{ asset('switchprints') }}/public/settings-input-composite.svg"
-          />
+          <img class="settings-input-composite" loading="lazy" src="{{ asset('switchprints') }}/public/settings-input-composite.svg"/>
 
           <div class="user-name-container">
             <div class="navbar-container">
               <div class="customer-name-field">
                 <div class="customer2 clickable branch">Branch</div>
               </div>
-              <a class="customer3">Support</a>
+              <a href="#" class="customer3" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Log out</a>
             </div>
           </div>
-          <img
-            class="total-orders-icon"
-            loading="lazy"
-            alt=""
-            src="{{ asset('switchprints') }}/public/vector-10.svg"
-          />
+          
+          <img class="total-orders-icon" loading="lazy" src="{{ asset('switchprints') }}/public/vector-10.svg" />
         </div>
       </div>
+  <!-- Hidden logout form -->
+<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+    @csrf
+</form>
 <script>
 window.addEventListener('load', function() {
   document.querySelector('.staff').addEventListener('click', function() {
