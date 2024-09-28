@@ -86,7 +86,7 @@
                                             <input type="password" class="form-control" id="password" name="password" {{ isset($user) ? '' : 'required' }}>
                                         </div>
                                         <div class="col-md-4">
-                                            @if($user)
+                                            @if(isset($user))
                                             <label for="machine_id">Machine</label>
                                             <select class="form-control form-select" id="machine_id" name="machine_id" required>
                                                 @foreach(getModelList('machines') as $machine)

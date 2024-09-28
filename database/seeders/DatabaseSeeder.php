@@ -44,13 +44,13 @@ class DatabaseSeeder extends Seeder
         ]);
         Shift::create([
             'name' => 'Day Shift',
-            'start_time' => '07:00',
-            'end_time' => '16:00'
+            'start_time' => '08:00',
+            'end_time' => '19:59'
         ]);
         Shift::create([
             'name' => 'Night Shift',
-            'start_time' => '17:00',
-            'end_time' => '06:00'
+            'start_time' => '20:00',
+            'end_time' => '07:59'
         ]);
         
         $this->call(RoleSeeder::class);
