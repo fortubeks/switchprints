@@ -26,6 +26,7 @@ class OrderController extends Controller
      */
     public function create()
     {
+        session()->forget('machines-edd');
         return view('switchprints.orders.form');
     }
 
@@ -152,6 +153,53 @@ class OrderController extends Controller
         return redirect('/orders')->with('status','Delete succesful');
     }
 
+    // public function getEdd(Request $request)
+    // {
+    //     $machine_id = $request->machineId;
+    //     $design_id = $request->designId;
+
+    //     // Fetch machine and design models
+    //     $machine = Machine::findOrFail($machine_id);
+    //     $design = Design::findOrFail($design_id);
+
+    //     // Calculate the selected current job's estimated time (stitches / stitches per shift)
+    //     $daysForThisJob = round($design->stitches / $machine->stitches_per_shift);
+    //     $thisJobCurrentEdd = now()->addDays($daysForThisJob); // Add days based on stitches
+
+    //     // Retrieve machine EDD from session, if exists
+    //     $machinesEdd = session()->get('machines-edd', []);
+
+    //     //if the edd is equal to the last edd check the balance of stitches left for the machine
+    //     //if the balane of stitches for that day remaining eg (100,000) is less than design stitches of 200,000
+    //     //set edd to edd+1 day
+
+    //     // If the session for machine's EDD is empty, calculate based on the database
+    //     if (empty($machinesEdd[$machine->id])) {
+    //         // Get the last job's expected delivery date for this machine from the database
+    //         $machineLastJob = $machine->jobs()->orderBy('expected_delivery_date', 'desc')->first();
+    //         $machineLastEdd = $machineLastJob ? $machineLastJob->expected_delivery_date : now();
+
+    //         // Initialize machine EDD in session
+    //         $machinesEdd[$machine->id] = $machineLastEdd; 
+    //     }
+
+    //     // Get the machine's last EDD from session
+    //     $machineLastEdd = $machinesEdd[$machine->id];
+
+    //     // Calculate the final EDD: compare last EDD from session or DB and current job EDD
+    //     $edd = $machineLastEdd->greaterThan(now()) 
+    //         ? $machineLastEdd->addDays($daysForThisJob) // If last job EDD is in the future, add to it
+    //         : $thisJobCurrentEdd; // Otherwise, use the current job EDD
+
+    //     // Update session with the new calculated EDD for the machine
+    //     $machinesEdd[$machine->id] = $edd;
+    //     session()->put('machines-edd', $machinesEdd);
+
+    //     return response()->json([
+    //         'edd' => $edd->toDateTimeString(),
+    //     ]);
+    // }
+
     public function getEdd(Request $request)
     {
         $machine_id = $request->machineId;
@@ -163,37 +211,54 @@ class OrderController extends Controller
 
         // Calculate the current job's estimated time (stitches / stitches per shift)
         $daysForThisJob = round($design->stitches / $machine->stitches_per_shift);
-        $thisJobCurrentEdd = now()->addDays($daysForThisJob); // Add days based on stitches
+        $thisJobCurrentEdd = now()->addDays($daysForThisJob); // Estimated delivery date for this job
 
-        // Retrieve machine EDD from session, if exists
+        // Retrieve machine EDD and remaining stitches from session
         $machinesEdd = session()->get('machines-edd', []);
+        $remainingStitches = session()->get('remaining-stitches', []);
 
-        // If the session for machine's EDD is empty, calculate based on the database
+        // If no previous EDD is set, calculate from the database
         if (empty($machinesEdd[$machine->id])) {
-            // Get the last job's expected delivery date for this machine from the database
             $machineLastJob = $machine->jobs()->orderBy('expected_delivery_date', 'desc')->first();
             $machineLastEdd = $machineLastJob ? $machineLastJob->expected_delivery_date : now();
-
-            // Initialize machine EDD in session
-            $machinesEdd[$machine->id] = $machineLastEdd; 
+            $machinesEdd[$machine->id] = $machineLastEdd;
+            $remainingStitches[$machine->id] = $machine->stitches_per_shift; // Reset remaining stitches
         }
 
-        // Get the machine's last EDD from session
+        // Fetch the last known EDD and remaining stitches for the selected machine
         $machineLastEdd = $machinesEdd[$machine->id];
+        $remainingForToday = $remainingStitches[$machine->id];
 
-        // Calculate the final EDD: compare last EDD from session or DB and current job EDD
-        $edd = $machineLastEdd->greaterThan(now()) 
-            ? $machineLastEdd->addDays($daysForThisJob) // If last job EDD is in the future, add to it
-            : $thisJobCurrentEdd; // Otherwise, use the current job EDD
+        // Check if the remaining stitches are enough for the current design
+        if ($remainingForToday < $design->stitches) {
+            // If not, calculate the new EDD by adding more days
+            $edd = $machineLastEdd->greaterThan(now()) 
+                ? $machineLastEdd->addDays($daysForThisJob) 
+                : $thisJobCurrentEdd;
 
-        // Update session with the new calculated EDD for the machine
+            // Reset remaining stitches for the new day
+            $remainingForToday = $machine->stitches_per_shift - ($design->stitches - $remainingForToday);
+        } else {
+            // Assign the EDD to the current day and adjust remaining stitches
+            $edd = $machineLastEdd->greaterThan(now()) 
+                ? $machineLastEdd 
+                : $thisJobCurrentEdd;
+
+            $remainingForToday -= $design->stitches;
+        }
+
+        // Update session with new remaining stitches and EDD
+        $remainingStitches[$machine->id] = $remainingForToday;
         $machinesEdd[$machine->id] = $edd;
+        
         session()->put('machines-edd', $machinesEdd);
+        session()->put('remaining-stitches', $remainingStitches);
 
         return response()->json([
             'edd' => $edd->toDateTimeString(),
         ]);
     }
+
 
     public function updateJobStatus(Request $request)
     {
@@ -202,10 +267,19 @@ class OrderController extends Controller
             'status' => 'required',
         ]);
         $job = Job::findorFail($request->job_id);
+
+        //if the status to update is 'In Progress', check that no other job in the order has the in progress status
+        if($request->status == 'In Progress'){
+            if($job->order->jobs()->where('status', 'In Progress')->exists()){
+                return response()->json([
+                    'status' => 'Not successful',
+                ],422); 
+            }
+        }
         $job->update(['status' => $request->status]);
         
         return response()->json([
             'status' => 'Update successful',
-        ]);
+        ],200);
     }
 }

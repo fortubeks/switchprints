@@ -32,7 +32,7 @@ class StoreOrderRequest extends FormRequest
             'order_date' => 'required|date',
             'phone' => [
                 'sometimes',
-                'required_without_all:guest_id',
+                'required_without_all:customer_id',
                 'nullable',
                 Rule::unique('customers')
                     ->whereNotNull('phone')

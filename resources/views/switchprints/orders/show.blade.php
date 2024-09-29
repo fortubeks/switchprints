@@ -181,7 +181,10 @@
         },
         error: function(xhr, status, error) {
             // Handle AJAX errors (e.g., display error message)
-            console.error(xhr, status, error);
+            //console.error(xhr, status, error);
+            if(xhr.status == 422){
+              alert('Another job is still is progress');
+            }
         }
         });
     });
