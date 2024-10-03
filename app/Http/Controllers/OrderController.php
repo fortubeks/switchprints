@@ -210,7 +210,7 @@ class OrderController extends Controller
         $design = Design::findOrFail($design_id);
 
         // Calculate the current job's estimated time (stitches / stitches per shift)
-        $daysForThisJob = round($design->stitches / $machine->stitches_per_shift);
+        $daysForThisJob = ceil($design->stitches / $machine->stitches_per_shift);
         $thisJobCurrentEdd = now()->addDays($daysForThisJob); // Estimated delivery date for this job
 
         // Retrieve machine EDD and remaining stitches from session
