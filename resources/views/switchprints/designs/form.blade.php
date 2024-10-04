@@ -10,7 +10,7 @@
 <div class="heading"></div>
 <main class="new-order-form">
         <header class="new-order-parent">
-          <a class="new-order2">Styles</a>
+          <a class="new-order2">Design</a>
           <div class="style-3296-2-container">
             <img class="style-3296-2-icon1" loading="lazy" src="{{ asset('switchprints') }}/public/user3296-2.svg"/>
           </div>
@@ -53,7 +53,7 @@
                                     <div class="row mb-4">
                                         <div class="col-md-4">
                                           <label for="price">Image</label>
-                                          <input type="file" class="form-control" name="dst" >
+                                          <input type="file" class="form-control" name="image" >
                                         </div>
                                         <div class="col-md-4">
                                           <label for="price">DST</label>
@@ -62,9 +62,16 @@
                                     </div>
                                     @if(isset($design))
                                     <div class="col-md-12 mb-4">
-                                      <?php $url =  asset('/storage/designs/'.$design->image); ?>
+                                      <?php $url =  asset('storage/'.$design->image); ?>
                                       <a href="{{ $url }}" target="_blank" onclick="window.open('{{ $url }}', 'popup'); return false;">
                                       <img class="img-thumbnail" width="200px" design="margin-right: 20px;" src="{{ $url }}"/> </a>
+                                    </div>
+                                    @endif
+                                    @if(isset($design->dst))
+                                    <div class="col-md-12 mb-4">
+                                      <?php $url =  asset('storage/'.$design->dst); ?>
+                                      <a href="{{ $url }}" target="_blank" onclick="window.open('{{ $url }}', 'popup'); return false;">
+                                      {{ $url }} </a>
                                     </div>
                                     @endif
 

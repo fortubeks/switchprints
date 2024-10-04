@@ -48,7 +48,7 @@
                             @forelse ($designs as $design)
                                 <tr class="clickable item" data-url="{{ route('designs.show', $design->id) }}">
                                     <td>{{ $design->name }}</td>
-                                    <td><?php $url =  asset('/storage/designs/'.$design->image); ?>
+                                    <td><?php $url =  asset('storage/'.$design->image); ?>
                                       <a href="{{ $url }}" target="_blank" onclick="window.open('{{ $url }}', 'popup'); return false;">
                                       <img class="img-thumbnail" width="150px" design="margin-right: 20px;" src="{{ $url }}"/> </a></td>
                                     <td>{{ $design->stitches }}</td>

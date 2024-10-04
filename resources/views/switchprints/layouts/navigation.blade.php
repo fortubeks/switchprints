@@ -3,7 +3,7 @@
 
         <input class="name-icon" type="checkbox" />
 
-        <div class="payment">Payment</div>
+        <div class="payment clickable">Payment</div>
         <img
           class="input-icon"
           loading="lazy"
